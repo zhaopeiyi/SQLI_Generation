@@ -1,12 +1,10 @@
-package me.saharnooby.lib.query.set;
+package set;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
  * Maps a {@link ResultSet} to a value.
- * @author saharNooby
- * @since 13:19 14.11.2019
  */
 @FunctionalInterface
 public interface ResultSetMapper<T> {
