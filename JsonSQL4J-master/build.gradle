@@ -1,0 +1,174 @@
+buildscript {
+    dependencies {
+        classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.0.1"
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'jacoco'
+    id "org.sonarqube" version "3.0"
+    id 'com.github.spotbugs' version '4.2.4'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
+}
+
+group 'io.github.eaxdev'
+archivesBaseName = 'jsonsql4j'
+version = System.getenv('RELEASE_VERSION') ?: "0.0.1"
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+    dependsOn test
+}
+
+jar {
+    from sourceSets.main.output
+    from sourceSets.main.allJava
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    implementation 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
+}
+
+signing {
+    sign publishing.publications
+}
+/*spotbugsMain {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}*/
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            customizePom(pom)
+            groupId group
+            artifactId archivesBaseName
+            version version
+
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            if (project.hasProperty('sonatypeUsername') && project.hasProperty('sonatypePassword')) {
+                credentials {
+                    username sonatypeUsername
+                    password sonatypePassword
+                }
+            }
+        }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/eaxdev/JsonSQL4J")
+            credentials {
+                username = project.findProperty("gpr.user") ?: "eaxdev"
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
+import com.github.spotbugs.snom.SpotBugsTask
+
+spotbugs {
+    effort = 'max'
+}
+
+project.tasks["sonarqube"].dependsOn jacocoTestReport
+
+tasks.withType(SpotBugsTask) {
+    reports {
+        xml.enabled = true
+        html.enabled = false
+    }
+}
+
+sonarqube {
+    properties {
+        property 'sonar.projectName', "$rootProject.name"
+        property "sonar.projectKey", "eaxdev_JsonSQL4J"
+        property "sonar.organization", "eaxdev"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property 'sonar.login', sonarToken
+        property 'sonar.jacoco.reportPaths', "$project.buildDir/jacoco/test.exec"
+    }
+}
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        root.children().last() + {
+            resolveStrategy = DELEGATE_FIRST
+
+            description 'Generate SQL queries from JSON strings'
+            name 'JsonSQL4J'
+            url 'https://github.com/eaxdev/JsonSQL4J'
+            organization {
+                name 'com.github.eaxdev'
+                url 'https://github.com/eaxdev'
+            }
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/eaxdev/JsonSQL4J/issues'
+            }
+            licenses {
+                license {
+                    name 'MIT License'
+                    url 'https://raw.githubusercontent.com/eaxdev/JsonSQL4J/master/LICENSE'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url 'https://github.com/eaxdev/JsonSQL4J'
+                connection 'scm:https://github.com/eaxdev/JsonSQL4J.git'
+                developerConnection 'scm:git://github.com/eaxdev/JsonSQL4J.git'
+            }
+            developers {
+                developer {
+                    id 'eaxdev'
+                    name 'RomanSA'
+                    email 'eaxdev@ya.ru'
+                }
+            }
+        }
+    }
+}
