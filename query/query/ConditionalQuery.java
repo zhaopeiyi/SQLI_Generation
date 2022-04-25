@@ -1,4 +1,4 @@
-package me.saharnooby.lib.query.query;
+package query.query;
 
 import lombok.NonNull;
 import me.saharnooby.lib.query.util.SQLUtil;
@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * Represents an SQL query with <code>WHERE</code> clause.
- * @author saharNooby
- * @since 17:05 15.11.2019
  */
 public abstract class ConditionalQuery<T extends ConditionalQuery<T>> extends AbstractQuery {
 
