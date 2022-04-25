@@ -1,8 +1,8 @@
-package me.saharnooby.lib.query.batch;
+package query.batch;
 
 import lombok.NonNull;
-import me.saharnooby.lib.query.query.AbstractQuery;
-import me.saharnooby.lib.query.query.impl.Raw;
+import query.query.AbstractQuery;
+import query.query.impl.Raw;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -13,8 +13,6 @@ import java.util.List;
 
 /**
  * Allows executing a query with multiple parameter lists in a single batch using {@link PreparedStatement#executeBatch()} method.
- * @author saharNooby
- * @since 19:34 28.03.2020
  */
 public final class BatchBuilder {
 
