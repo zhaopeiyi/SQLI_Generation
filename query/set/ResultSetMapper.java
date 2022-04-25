@@ -1,4 +1,4 @@
-package set;
+package query.set;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
