@@ -9,10 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-/**
- * @author saharNooby
- * @since 12:56 17.11.2019
- */
+
 class QueryTest {
 
 	@Test
