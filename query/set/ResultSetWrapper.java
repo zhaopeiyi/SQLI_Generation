@@ -1,4 +1,4 @@
-package me.saharnooby.lib.query.set;
+package query.set;
 
 import lombok.NonNull;
 
@@ -12,8 +12,6 @@ import java.util.Optional;
 /**
  * A {@link ResultSet} wrapper allowing useful operations like mapping.
  * If closed, underlying result set will be closed.
- * @author saharNooby
- * @since 13:16 14.11.2019
  */
 public final class ResultSetWrapper implements AutoCloseable {
 
