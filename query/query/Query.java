@@ -1,4 +1,4 @@
-package me.saharnooby.lib.query.query;
+package query.query;
 
 import lombok.NonNull;
 import me.saharnooby.lib.query.query.impl.*;
@@ -8,8 +8,6 @@ import java.util.Arrays;
 
 /**
  * Utility class for creating query objects.
- * @author saharNooby
- * @since 18:11 14.11.2019
  */
 public final class Query {
 
