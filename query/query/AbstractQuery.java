@@ -1,4 +1,4 @@
-package me.saharnooby.lib.query.query;
+package query.query;
 
 import lombok.NonNull;
 import me.saharnooby.lib.query.set.ResultSetMapper;
@@ -13,8 +13,6 @@ import java.util.Optional;
 
 /**
  * Represents an SQL query with some parameters to be filled in placeholders.
- * @author saharNooby
- * @since 13:08 14.11.2019
  */
 public abstract class AbstractQuery {
 
