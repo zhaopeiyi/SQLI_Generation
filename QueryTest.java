@@ -1,18 +1,15 @@
-package me.saharnooby.lib.query.query;
+package query;
 
-import me.saharnooby.lib.query.query.impl.Delete;
-import me.saharnooby.lib.query.query.impl.Insert;
-import me.saharnooby.lib.query.query.impl.Select;
-import me.saharnooby.lib.query.query.impl.Update;
+import query.impl.Delete;
+import query.impl.Insert;
+import query.impl.Select;
+import query.impl.Update;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-/**
- * @author saharNooby
- * @since 12:56 17.11.2019
- */
+
 class QueryTest {
 
 	@Test
